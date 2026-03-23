@@ -186,7 +186,7 @@ class BatteryNotifier:
                 try:
                     if percent <= self.low_value and not plugged:
                         if not self.low_alert_triggered:
-                            playsound(self.sound_file)
+                            threading.Thread(target=playsound, args=(self.sound_file,), daemon=True).start()
                             msg = f"Battery Low: {percent}%"
                             self.log_history(msg)
                             notification.notify(title="Battery Low!", message=msg, timeout=5)
@@ -195,7 +195,7 @@ class BatteryNotifier:
 
                     elif percent >= self.full_value and plugged:
                         if not self.full_alert_triggered:
-                            playsound(self.sound_file)
+                            threading.Thread(target=playsound, args=(self.sound_file,), daemon=True).start()
                             msg = f"Battery Full: {percent}%"
                             self.log_history(msg)
                             notification.notify(title="Battery Full", message=msg, timeout=5)
