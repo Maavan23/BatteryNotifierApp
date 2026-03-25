@@ -1,0 +1,72 @@
+Battery Notifier
+Copyright 2026 [Sasindu Kaveesha Gamapathirana]
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+------------------------------------------------------------------------
+
+This project makes use of the following third-party open-source packages.
+Each package is used in accordance with its respective license.
+
+------------------------------------------------------------------------
+
+psutil
+License: BSD 3-Clause
+Homepage: https://github.com/giampaolo/psutil
+
+playsound
+License: MIT
+Homepage: https://github.com/TaylorSMarks/playsound
+
+pystray
+License: LGPL-3.0
+Homepage: https://github.com/moses-palmer/pystray
+
+Pillow (PIL)
+License: MIT-CMU (Historical Permission Notice and Disclaimer)
+Homepage: https://python-pillow.org
+
+plyer
+License: MIT
+Homepage: https://github.com/kivy/plyer
+
+customtkinter
+License: MIT
+Homepage: https://github.com/TomSchimansky/CustomTkinter
+
+tkinter
+License: Python Software Foundation License (PSF)
+Homepage: https://docs.python.org/3/library/tkinter.html
+
+PyInstaller
+License: GPL-2.0 with bootloader exception
+Homepage: https://www.pyinstaller.org
+Note: PyInstaller is used only as a build tool and is not
+      distributed with or bundled into the application binary
+      in a way that affects this project's license.
+
+------------------------------------------------------------------------
+
+This software was built and packaged using:
+
+Python 3.x
+License: Python Software Foundation License (PSF)
+Homepage: https://www.python.org
+
+Inno Setup
+License: Inno Setup License (Jordan Russell)
+Homepage: https://jrsoftware.org/isinfo.php
+Note: Inno Setup is used only as an installer build tool and
+      is not distributed with the application itself.
+
+------------------------------------------------------------------------
