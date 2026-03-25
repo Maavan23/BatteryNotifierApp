@@ -21,8 +21,9 @@ class BatteryNotifier:
         self.load_settings()
         self.sound_file = os.path.join(self.current_dir, "short_bell.mp3")
         self.running = True
-        self.low_alert_triggered  = False
-        self.full_alert_triggered = False
+        self.ALARM_REPEAT_LIMIT = 3   # alarm plays this many times per threshold crossing
+        self.low_play_count  = 0
+        self.full_play_count = 0
 
         # Hidden main root — mainloop() runs on main thread
         self.root = tk.Tk()
@@ -56,9 +57,9 @@ class BatteryNotifier:
                 self.low_value  = low
                 self.full_value = full
                 self.save_settings()
-                # Reset triggers so new thresholds fire immediately if already met
-                self.low_alert_triggered  = False
-                self.full_alert_triggered = False
+                # Reset counters so new thresholds fire immediately if already met
+                self.low_play_count  = 0
+                self.full_play_count = 0
                 win.destroy()
             except Exception:
                 pass  # keep window open on bad input
@@ -173,11 +174,9 @@ class BatteryNotifier:
     # ---------------- Battery Checker ----------------
     def _play_alarm(self):
         """Fire alarm in its own daemon thread so nothing can block it."""
-        threading.Thread(
-            target=playsound,
-            args=(self.sound_file,),
-            daemon=True
-        ).start()
+        def _play():
+            playsound(self.sound_file)
+        threading.Thread(target=_play, daemon=True).start()
 
     def check_battery(self):
         """
@@ -196,27 +195,31 @@ class BatteryNotifier:
                 percent = battery.percent
 
                 if percent <= self.low_value:
-                    if not self.low_alert_triggered:
+                    if self.low_play_count < self.ALARM_REPEAT_LIMIT:
                         self._play_alarm()
-                        msg = f"Battery Low: {percent}%"
-                        self.log_history(msg)
-                        notification.notify(title="Battery Low!", message=msg, timeout=5)
-                        self.low_alert_triggered  = True
-                        self.full_alert_triggered = False
+                        self.low_play_count += 1
+                        if self.low_play_count == 1:
+                            # Log and notify only on the first ring
+                            msg = f"Battery Low: {percent}%"
+                            self.log_history(msg)
+                            notification.notify(title="Battery Low!", message=msg, timeout=5)
+                        self.full_play_count = 0
 
                 elif percent >= self.full_value:
-                    if not self.full_alert_triggered:
+                    if self.full_play_count < self.ALARM_REPEAT_LIMIT:
                         self._play_alarm()
-                        msg = f"Battery Full: {percent}%"
-                        self.log_history(msg)
-                        notification.notify(title="Battery Full", message=msg, timeout=5)
-                        self.full_alert_triggered = True
-                        self.low_alert_triggered  = False
+                        self.full_play_count += 1
+                        if self.full_play_count == 1:
+                            # Log and notify only on the first ring
+                            msg = f"Battery Full: {percent}%"
+                            self.log_history(msg)
+                            notification.notify(title="Battery Full", message=msg, timeout=5)
+                        self.low_play_count = 0
 
                 else:
-                    # Battery is between thresholds — reset both flags
-                    self.low_alert_triggered  = False
-                    self.full_alert_triggered = False
+                    # Battery is between thresholds — reset both counters
+                    self.low_play_count  = 0
+                    self.full_play_count = 0
 
             except PlaysoundException:
                 print("Sound error — check short_bell.mp3 exists")
