@@ -3,9 +3,6 @@
 A lightweight Windows system tray app that alerts you when your battery is low or fully charged.  
 
 ## Features
-- 🔴 Low battery alert  
-- 🟢 Full charge alert  
-- ⚪ Normal battery monitoring  
 - Runs silently in the system tray  
 - Custom sound notifications  
 
@@ -15,4 +12,4 @@ A lightweight Windows system tray app that alerts you when your battery is low o
 3. Follow the setup instructions  
 
 ## Author
-Sasindu Kaveesha – Open-source & free to use  
+Sasindu Kaveesha – Open-source & free to use     
